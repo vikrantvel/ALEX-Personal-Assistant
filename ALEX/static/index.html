@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALEX // Stark Industries HUD</title>
+    <!-- Google Fonts for futuristic typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=30">
+</head>
+<body class="stark-theme">
+
+    <div class="hud-container">
+        <!-- Top Navigation / Header -->
+        <header class="hud-header">
+            <div class="header-left">
+                <span class="stark-logo">STARK INDUSTRIES</span>
+                <span class="divider">|</span>
+                <span class="system-id">ALEX v8.4.2 // SECURITY HUD</span>
+            </div>
+            <div class="header-center">
+                <div class="arc-core-status">
+                    <span class="pulse-dot"></span>
+                    <span class="status-text" id="system-status">CORE STATUS: STANDBY</span>
+                </div>
+            </div>
+            <div class="header-right" id="time-display">
+                00:00:00 UTC
+            </div>
+        </header>
+
+        <main class="hud-grid">
+            <!-- Left Column: 3D Visualizer & Core Controls -->
+            <div class="left-column">
+                <!-- 3D Octagonal Glass Prism Visualizer -->
+                <section class="hud-panel prism-panel">
+                    <div class="prism-canvas-container" id="prism-click-trigger" title="Call ALEX (Toggle Microphone)">
+                        <canvas class="prism-canvas" id="prism-canvas" width="280" height="280"></canvas>
+                    </div>
+                    <h1 class="prism-title">Alex</h1>
+                    <div class="voice-status-label" id="voice-label">MIC STANDBY (CLICK PRISM / SPACEBAR TO WAKE)</div>
+                </section>
+
+                <!-- Core System Controls & Configuration -->
+                <section class="hud-panel controls-panel">
+                    <h2 class="panel-title"><span class="icon">&#9670;</span> SYSTEM INTRUSION DIRECTIVES</h2>
+                    
+                    <div class="control-buttons-grid">
+                        <button class="stark-button" onclick="triggerCommand('/malware')">
+                            <span>&#9737;</span> MALWARE FORENSICS
+                        </button>
+                        <button class="stark-button" onclick="triggerCommand('/deepscan')">
+                            <span>&#9881;</span> DEEP CORE AUDIT
+                        </button>
+                        <button class="stark-button" onclick="triggerCommand('/scan 1-1024')">
+                            <span>&#8644;</span> PORT MATRIX SCAN
+                        </button>
+                        <button class="stark-button" onclick="triggerCommand('/cyber')" id="hud-tactical-btn">
+                            <span>&#9762;</span> TACTICAL PROTOCOL
+                        </button>
+                        <button class="stark-button" onclick="triggerCommand('/secure')">
+                            <span>&#128737;</span> DEPLOY COUNTERS
+                        </button>
+                        <button class="stark-button" id="hud-holo-btn" style="border-color: var(--neon-blue); color: var(--neon-blue); background: rgba(0, 240, 255, 0.04);">
+                            <span>&#9699;</span> HOLO-SIMULATION
+                        </button>
+                        <button class="stark-button" id="voice-toggle-btn">
+                            <span>&#128266;</span> VOICE DIALOGUE: ON
+                        </button>
+                        <button class="stark-button" onclick="triggerCommand('/bugbro')">
+                            <span>&#128030;</span> BUG BRO
+                        </button>
+                        <button class="stark-button" onclick="triggerCommand('/help')">
+                            <span>&#9432;</span> SYSTEM MATRIX HELP
+                        </button>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Center Column: Main Interactive Console -->
+            <section class="hud-panel center-panel">
+                <h2 class="panel-title"><span class="icon">&#9670;</span> INTERACTIVE COMMAND QUANTUM CONSOLE</h2>
+                
+                <!-- Output Log -->
+                <div class="console-output" id="console-output">
+                    <div class="system-message">
+                        [SYSTEM]: Secure interface initialized. Welcome back, Sir. Core coupling required. Click the 3D Prism or press Spacebar to wake up the ALEX microphone array.
+                    </div>
+                </div>
+
+                <!-- Thought stream overlays -->
+                <div class="thought-stream-container hidden" id="thought-container">
+                    <div class="thought-header">
+                        <span class="scanning-text">COMPILING LOGIC PATTERNS...</span>
+                        <span class="thought-sub">DIAGNOSTICS HUD MONITOR</span>
+                    </div>
+                    <div class="thought-content" id="thought-content"></div>
+                </div>
+
+                <!-- Input console form -->
+                <form class="terminal-input-form" id="terminal-form">
+                    <span class="terminal-prompt">ALEX@STARK:~$</span>
+                    
+                    <!-- Screenshot Preview Thumbnail -->
+                    <div class="upload-preview-container hidden" id="upload-preview-container">
+                        <img id="upload-preview-img" src="" alt="preview">
+                        <button type="button" class="remove-preview-btn" id="remove-preview-btn" title="Remove Screenshot">&times;</button>
+                    </div>
+                    
+                    <input type="text" id="terminal-input" placeholder="Initiate voice wake or type directive here..." autocomplete="off" disabled>
+                    <input type="file" id="screenshot-upload" accept="image/*" style="display: none;">
+                    
+                    <button type="button" class="upload-button" id="upload-btn" title="Upload Screenshot">
+                        <svg viewBox="0 0 24 24" width="20" height="20" class="upload-icon">
+                            <path fill="currentColor" d="M16.5 6v11.5c0 2.21-1.79 4-4 4s-4-1.79-4-4V5c0-3.31 2.69-6 6-6s6 2.69 6 6v10c0 4.42-3.58 8-8 8s-8-3.58-8-8V5h2v10c0 3.31 2.69 6 6 6s6-2.69 6-6V5c0-2.21-1.79-4-4-4s-4 1.79-4 4v12.5c0 1.1.9 2 2 2s2-.9 2-2V6h2z"/>
+                        </svg>
+                    </button>
+                    
+                    <button type="button" class="mic-button" id="mic-btn" title="Call ALEX (Toggle Microphone)">
+                        <svg viewBox="0 0 24 24" width="20" height="20" class="mic-icon">
+                            <path fill="currentColor" d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/>
+                        </svg>
+                    </button>
+                    <button type="submit" class="send-button stark-button" id="send-btn" disabled style="padding: 6px 15px;">TRANSMIT</button>
+                    <button type="button" class="stark-button stop-btn" id="stop-btn" style="border-color: var(--neon-red); color: var(--neon-red); background: rgba(255, 42, 42, 0.04); padding: 6px 15px; margin-left: 8px; display: none;">STOP</button>
+                </form>
+            </section>
+
+            <!-- Right Column: Reserved Space & Telemetry Forensics -->
+            <div class="right-column">
+                <!-- Top Right: Core Coupling Settings -->
+                <section class="hud-panel settings-panel">
+                    <h2 class="panel-title"><span class="icon">&#9670;</span> CORE COUPLING LINK</h2>
+                    <div class="core-coupling-wrapper">
+                        <select id="connection-mode" class="stark-select">
+                            <option value="online">GOOGLE GEMINI (ONLINE)</option>
+                            <option value="offline">OLLAMA LOCAL (OFFLINE)</option>
+                        </select>
+                        
+                        <div class="input-box-wrapper">
+                            <!-- Gemini API Key Input -->
+                            <input type="password" id="api-key-input" placeholder="ENTER GEMINI API KEY..." autocomplete="new-password">
+                            
+                            <!-- Ollama Model Input -->
+                            <input type="text" id="ollama-model-input" placeholder="OLLAMA MODEL (e.g. deepseek-r1:8b)" value="deepseek-r1:8b" style="display: none;">
+                        </div>
+                        
+                        <button class="stark-button initialize-btn" id="save-api-key">INITIALIZE CORE</button>
+                        <button class="stark-button shutdown-btn" id="shutdown-core-btn">SHUTDOWN CORE</button>
+                        <div class="api-status-label" id="api-status">CORES UNCOUPLED</div>
+                    </div>
+                </section>
+
+                <!-- Bottom Right: Laptop Processor Real-Time Graph & Alerts -->
+                <section class="hud-panel processor-panel">
+                    <h2 class="panel-title"><span class="icon">&#9670;</span> SYSTEM PROCESSOR OVERLOAD FORENSICS</h2>
+                    
+                    <!-- Progress Bar Load Meter -->
+                    <div class="cpu-load-meter">
+                        <div class="cpu-load-header">
+                            <span class="cpu-load-label">HOST PROCESSOR LOAD</span>
+                            <span class="cpu-load-value" id="cpu-value">0%</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar glow-red" id="cpu-bar" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Real-Time Graphic Sparkline Grid -->
+                    <div class="cpu-graph-container">
+                        <canvas class="cpu-graph-canvas" id="cpu-graph-canvas"></canvas>
+                    </div>
+
+                    <!-- Processor Spikes & Alert Log -->
+                    <div class="cpu-alerts-panel">
+                        <div class="cpu-alerts-title">Overload Alerts Log</div>
+                        <div class="cpu-alerts-list" id="cpu-alerts-list">
+                            <div class="cpu-alerts-empty" id="cpu-alerts-empty">No computational surges recorded. Core stable, Sir.</div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <footer class="hud-footer">
+            <div class="footer-left">SECURE RED CORE PROTOCOL // IRON CLAD INTEGRITY SHIELDS ACTIVE</div>
+            <div class="footer-right">&copy; 2026 STARK ARCHIVES - ALEX CORES</div>
+        </footer>
+    </div>
+
+    <!-- UI SFX Audio Elements -->
+    <audio id="sfx-beep" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-84.wav" preload="auto"></audio>
+    <audio id="sfx-alarm" src="https://assets.mixkit.co/active_storage/sfx/950/950-84.wav" preload="auto" loop></audio>
+    <audio id="sfx-scan" src="https://assets.mixkit.co/active_storage/sfx/1484/1484-84.wav" preload="auto"></audio>
+
+    <!-- Holo-Simulation Transitional Loading Screen -->
+    <div id="holo-loading-screen" class="holo-overlay" style="display: none;">
+        <div class="holo-loading-wrapper">
+            <div class="prism-canvas-container large">
+                <canvas id="holo-loading-canvas" width="280" height="280"></canvas>
+            </div>
+            <div class="holo-loading-text">Holo-Simulation Loading...</div>
+            <div class="holo-loading-sub">BOOTING STARK HOLO-CORES</div>
+        </div>
+    </div>
+
+    <!-- Holo-Simulation Workspace Screen -->
+    <div id="holo-simulation-screen" class="holo-overlay" style="display: none;">
+        <!-- Stark HUD Hologram Workspace Header -->
+        <header class="holo-workspace-header">
+            <div class="holo-header-left">
+                <span class="holo-logo">STARK HOLO-SIMULATION CORE</span>
+                <span class="divider">//</span>
+                <span class="holo-system-status" id="holo-system-status">RESOLUTION: 4X DETAILED MATRIX</span>
+            </div>
+            <div class="holo-header-center">
+                <!-- Volumetric Projection Protocol Active -->
+            </div>
+            <div class="holo-header-right" style="display: flex; gap: 10px;">
+                <button class="stark-button" id="holo-mode-btn" style="border-color: var(--neon-blue); color: var(--neon-blue); background: rgba(0, 240, 255, 0.04);">
+                    <span>&#9881;</span> ENTER WORLD BUILDING
+                </button>
+                <button class="stark-button shutdown-btn" id="holo-return-btn">
+                    <span>&#10006;</span> DISENGAGE PROTOCOL
+                </button>
+            </div>
+        </header>
+
+        <!-- Dynamic Hologram Viewing Area -->
+        <div class="holo-workspace-body">
+            <!-- VIEW A: SINGLE VIEW (Full Screen Hologram Projection) -->
+            <div class="holo-view-single" id="holo-view-single">
+                <section class="hud-panel holo-visualizer-panel">
+                    <div class="holo-metadata">
+                        <div class="meta-line">HOLO-PROJECTION ACTIVE</div>
+                        <div class="meta-line" id="holo-meta-coords">ROT: X 0.37 | Y 3.98 | Z 0.05</div>
+                        <div class="meta-line" id="holo-meta-shape">MATRIX ACTIVE: CUSTOM / THE MOUNTAIN VALLEY</div>
+                    </div>
+                    
+                    <!-- Floating High-Tech HUD Zoom Controller Tool -->
+                    <div class="holo-zoom-tool" id="holo-zoom-tool">
+                        <div class="zoom-title">ZOOM RATIO</div>
+                        <div class="zoom-controls-row">
+                            <button type="button" class="zoom-btn" id="zoom-out-btn" title="Zoom Out">-</button>
+                            <button type="button" class="zoom-btn reset" id="zoom-reset-btn" title="Reset Zoom">RESET</button>
+                            <button type="button" class="zoom-btn" id="zoom-in-btn" title="Zoom In">+</button>
+                        </div>
+                        <div class="zoom-slider-wrapper">
+                            <input type="range" id="zoom-range" min="0.2" max="18.0" step="0.1" value="1.0">
+                            <span class="zoom-display" id="zoom-display">1.0x</span>
+                        </div>
+                        
+                        <div class="zoom-title" style="margin-top: 8px;">AUTO ROTATION</div>
+                        <div class="zoom-controls-row">
+                            <button type="button" class="zoom-btn" id="holo-rotate-toggle" title="Toggle Auto Rotation" style="width: 100%;">ACTIVE</button>
+                        </div>
+                        
+                        <div class="zoom-title" style="margin-top: 8px;">HAND GESTURES</div>
+                        <div class="zoom-controls-row">
+                            <button type="button" class="zoom-btn paused" id="holo-hand-toggle" title="Toggle Hand Gesture Controls" style="width: 100%;">INACTIVE</button>
+                        </div>
+                        
+                        <div class="zoom-title" style="margin-top: 12px; border-top: 1px solid rgba(255, 42, 42, 0.25); padding-top: 8px;">ANIMATION MATRIX</div>
+                        <div class="anim-toggle-row">
+                            <button type="button" class="zoom-btn" id="btn-anim-vehicle" title="Toggle Vehicle Animation" style="font-size: 0.65rem; padding: 4px 0; width: 100%;">VEHICLES: ON</button>
+                        </div>
+                        <div class="anim-toggle-row" style="margin-top: 4px;">
+                            <button type="button" class="zoom-btn" id="btn-anim-human" title="Toggle Human Animation" style="font-size: 0.65rem; padding: 4px 0; width: 100%;">HUMANS: ON</button>
+                        </div>
+                        <div class="anim-toggle-row" style="margin-top: 4px;">
+                            <button type="button" class="zoom-btn" id="btn-anim-building" title="Toggle Building Animation" style="font-size: 0.65rem; padding: 4px 0; width: 100%;">BUILDINGS: ON</button>
+                        </div>
+                        <div class="anim-toggle-row" style="margin-top: 4px;">
+                            <button type="button" class="zoom-btn" id="btn-anim-env" title="Toggle Environment Animation" style="font-size: 0.65rem; padding: 4px 0; width: 100%;">ENVIRON: ON</button>
+                        </div>
+                        
+                        <div class="selected-entity-panel" id="selected-entity-panel" style="display: none; margin-top: 12px; border-top: 1px solid rgba(255, 42, 42, 0.25); padding-top: 8px; flex-direction: column; gap: 4px; width: 100%;">
+                            <div class="zoom-title" id="selected-entity-name" style="color: var(--neon-blue);">SELECTED ENTITY</div>
+                            <div class="anim-toggle-row">
+                                <button type="button" class="zoom-btn" id="btn-anim-selected" title="Toggle Selected Asset Animation" style="font-size: 0.62rem; padding: 4px 0; width: 100%;">ANIMATE: ON</button>
+                            </div>
+                            <div class="anim-toggle-row" style="margin-top: 4px;">
+                                <button type="button" class="zoom-btn" id="btn-delete-selected" title="Remove Selected Asset" style="font-size: 0.62rem; padding: 4px 0; width: 100%; border-color: rgba(255, 42, 42, 0.5); color: var(--neon-red);">DELETE ASSET</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <canvas id="holo-canvas"></canvas>
+                    
+                    <div class="holo-footer-meta">STARK SIMULATION MATRIX // SECURITY LINK: OK</div>
+                </section>
+                
+                <!-- Floating Glassmorphism Chat & Directives Console -->
+                <section class="hud-panel holo-console-panel">
+                    <h2 class="panel-title"><span class="icon">&#9670;</span> HOLO-SIMULATION CONSOLE</h2>
+                    
+                    <!-- Output messages specific to Holo-Simulation -->
+                    <div class="holo-console-output" id="holo-console-output">
+                        <div class="system-message">
+                            [HOLO-SYSTEM]: Core coupled. Ready to model dotted 3D environments, Sir. 
+                            Try entering: "DNA double helix", "Arc Reactor core", "Cyber network", or "Quantum Tesseract".
+                        </div>
+                    </div>
+                    
+                    <!-- Chat Form -->
+                    <form class="holo-console-form" id="holo-console-form">
+                        <input type="text" id="holo-console-input" placeholder="Specify scenario for hologram..." autocomplete="off">
+                        <button type="submit" class="stark-button initialize-btn" style="justify-content: center; width: 100%; margin-top: 10px;">TRANSMIT DIRECTIVE</button>
+                    </form>
+                </section>
+            </div>
+
+
+        </div>
+    </div>
+
+    <script src="app.js?v=56"></script>
+</body>
+</html>
