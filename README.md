@@ -172,14 +172,6 @@ alex/
 └── ocr               # Compiled Swift binary for offline OCR (macOS)
 ```
 
----
-
-## Roadmap
-- [ ] Cross-platform OCR (replace Swift binary with Tesseract fallback)
-- [ ] Voice input (Whisper integration)
-- [ ] Multi-agent scenario simulation in Holo-Sim
-- [ ] Mobile gesture support (touch events)
-- [ ] Plugin API for custom HUD modules
 
 ---
 
@@ -191,4 +183,4 @@ MIT License — see [LICENSE](LICENSE) for details.
 > Built by [Vikrantvel S P](https://github.com/vikrantvel)
 ```
 
-Paste this as `README.md` in the root of your repo. Update the clone URL once you push it to GitHub.
+
