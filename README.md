@@ -172,15 +172,7 @@ alex/
 └── ocr               # Compiled Swift binary for offline OCR (macOS)
 ```
 
-
----
-
-## License
-MIT License — see [LICENSE](LICENSE) for details.
-
 ---
 
 > Built by [Vikrantvel S P](https://github.com/vikrantvel)
 ```
-
-
